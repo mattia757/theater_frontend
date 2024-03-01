@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js_interop';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import '../../exceptions/app_axceptions.dart';
 import 'base_user_api_services.dart';
@@ -11,7 +13,16 @@ class UserNetworkResponse extends BaseUserApiServices {
   Future getGetApiResponse(String url) async {
     dynamic responseJson;
     try {
-      final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
+      final response = await Dio().get(
+        url,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Access-Control-Allow-Origin": "*",
+          },
+        ),
+      );
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('Error during Get Request');
@@ -23,20 +34,34 @@ class UserNetworkResponse extends BaseUserApiServices {
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
     try {
-      final response = await http.post(Uri.parse(url), body: data)
-      .timeout(const Duration(seconds: 10));
-      responseJson = returnResponse(response as http.Response);
+      final response = await Dio().post(
+        url,
+        data: data,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Access-Control-Allow-Origin": "*",
+          },
+        ),
+      );
+
+      responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('Error during Post request');
     }
     return responseJson;
   }
 
-  dynamic returnResponse(http.Response response) {
+  dynamic returnResponse(Response response) {
     switch (response.statusCode) {
       case 200:
-        dynamic responseJson = jsonDecode(response.body);
-        return responseJson;
+        if (response.data is String) {
+          dynamic responseJson = jsonDecode(response.data);
+          return responseJson;
+        } else {
+          return response.data;
+        }
       case 503:
         throw UnauthorisedException("You don't have authorization");
       default:

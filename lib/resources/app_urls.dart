@@ -4,4 +4,5 @@ class AppUrls {
   //USER URLS
   static var baseUserUrl = "$baseUrl/user";
   static var registerUser = "$baseUrl/v1/auth/register";
+  static var loginUser = "$baseUrl/v1/auth/authenticate";
 }
