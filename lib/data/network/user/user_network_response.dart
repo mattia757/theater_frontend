@@ -4,6 +4,7 @@ import 'dart:js_interop';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import '../../../model/user_model.dart';
 import '../../exceptions/app_axceptions.dart';
 import 'base_user_api_services.dart';
 
@@ -56,11 +57,19 @@ class UserNetworkResponse extends BaseUserApiServices {
   dynamic returnResponse(Response response) {
     switch (response.statusCode) {
       case 200:
-        if (response.data is String) {
+        if (response.data is List) {
+
+          return (response.data as List).map((item) => UserList.fromJson(item)).toList();
+
+        } else if (response.data is String) {
+
           dynamic responseJson = jsonDecode(response.data);
           return responseJson;
+
         } else {
+
           return response.data;
+
         }
       case 503:
         throw UnauthorisedException("You don't have authorization");

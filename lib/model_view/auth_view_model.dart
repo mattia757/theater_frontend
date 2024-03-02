@@ -66,15 +66,9 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       notifyListeners();
 
-      if (value != null) {
-        usersList = ApiResponse.completed(value.cast<UserList>());
-        Utils().showErrorFlushBar(context, "Success", "Get Users Successful");
-      } else {
-        // Modifica la gestione in caso il valore ritornato sia null
-        usersList = ApiResponse.error("No data received");
-        Utils().showErrorFlushBar(context, "Error", "No data received");
-      }
-    }).onError((error, stackTrace) {
+      usersList = ApiResponse.completed(value.cast<UserList>());
+      Utils().showErrorFlushBar(context, "Success", "Get Users Successful");
+        }).onError((error, stackTrace) {
       loading = false;
       usersList = ApiResponse.error(error.toString());
       notifyListeners();

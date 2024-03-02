@@ -50,39 +50,46 @@ class _getUsersScreenState extends State<getUsersScreen> {
                   return Text(value.usersList.message.toString());
                 case Status.completed:
                   return ListView.builder(
-                    //itemCount: value.usersList!.data!.length,
+                    itemCount: value.usersList.data!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Table(
-                          children: [
-                            TableRow(
-                              children: [
-                                const Text('Name'),
-                                Text(value.usersList.data![index].name.toString()),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                const Text('Surname'),
-                                Text(value.usersList.data![index].surname.toString()),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                const Text('Email'),
-                                Text(value.usersList.data![index].email.toString()),
-                              ],
-                            ),
-                            TableRow(
-                              children: [
-                                const Text('Username'),
-                                Text(value.usersList.data![index].username.toString()),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },);
+                      if (index < value.usersList.data!.length) {
+                        return Card(
+                          child: Table(
+                            children: [
+                              TableRow(
+                                children: [
+                                  const Text('Name'),
+                                  Text(value.usersList.data![index].name.toString()),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  const Text('Surname'),
+                                  Text(value.usersList.data![index].surname.toString()),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  const Text('Email'),
+                                  Text(value.usersList.data![index].email.toString()),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  const Text('Username'),
+                                  Text(value.usersList.data![index].username.toString()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        // Handle caso in cui l'indice è maggiore della lunghezza della lista
+                        return const SizedBox.shrink(); // O altro comportamento appropriato
+                      }
+                    },
+                  );
+
                 default:
                   return const Text('Nothing to show');
               }

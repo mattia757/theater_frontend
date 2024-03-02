@@ -22,7 +22,16 @@ class UserList {
 
   UserList({this.name, this.surname, this.email, this.username});
 
-  UserList.fromJson(Map<String, dynamic> json) {
+  factory UserList.fromJson(Map<String, dynamic> json) {
+    return UserList(
+      name: json['name'],
+      surname: json['surname'],
+      email: json['email'],
+      username: json['username'],
+    );
+  }
+
+  /*UserList.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     surname = json['surname'];
     email = json['email'];
@@ -36,5 +45,5 @@ class UserList {
     data['email'] = this.email;
     data['username'] = this.username;
     return data;
-  }
+  }*/
 }
