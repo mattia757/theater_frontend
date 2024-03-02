@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../model_view/home_view_model.dart';
 import '../model_view/user_view_model.dart';
 import '../utils/routes/routes_name.dart';
+import 'get_users_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,9 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         create: (context) => _homeViewModel,
         child: Consumer<HomeViewModel>(
           builder: (context, value, child) {
-            return Center(
-              child: Text('Home Screen'),
-            );
+            // Mostra la vista getUsersScreen all'interno di HomeScreen
+            return getUsersScreen();
           },
         ),
       ),

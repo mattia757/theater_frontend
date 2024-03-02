@@ -24,4 +24,16 @@ class AuthRepository{
       rethrow;
     }
   }
+
+  Future<List<dynamic>> getUsers() async {
+    try {
+      dynamic response = await _userApiServices.getGetApiResponse(AppUrls.getUsers);
+
+      print(response.toString());
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
