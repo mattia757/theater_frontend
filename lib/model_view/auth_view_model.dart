@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:js';
+import 'dart:js_util';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theater_frontend/model_view/user_view_model.dart';
 
+import '../data/exceptions/app_exceptions.dart';
 import '../data/response/api_responses.dart';
 import '../model/user_model.dart';
 import '../repo/auth_repository.dart';
@@ -17,7 +24,7 @@ class AuthViewModel with ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    _myRepo.userRegister(data).then((value) {
+    _myRepo.userRegister(data, context).then((value) {
       loading = false;
       notifyListeners();
 
@@ -27,7 +34,7 @@ class AuthViewModel with ChangeNotifier {
       Provider.of<UserViewModel>(context, listen: false);
 
       userModelViewModel.saveUser(UserModel(token: value.toString()));
-      Navigator.pushNamed(context, RoutesName.home);
+      context.go(RoutesName.home);
     }).onError((error, stackTrace) {
       loading = false;
       notifyListeners();
@@ -40,7 +47,7 @@ class AuthViewModel with ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    _myRepo.userLogin(data).then((value) {
+    _myRepo.userLogin(data, context).then((value) {
       loading = false;
       notifyListeners();
 
@@ -49,34 +56,49 @@ class AuthViewModel with ChangeNotifier {
             Provider.of<UserViewModel>(context, listen: false);
 
       userModelViewModel.saveUser(UserModel(token: value.toString()));
-      Navigator.pushNamed(context, RoutesName.home);
+      context.go(RoutesName.home);
     }).onError((error, stackTrace) {
       loading = false;
       notifyListeners();
 
-      Utils().showErrorFlushBar(context, "Error", error.toString());
+      print(error.toString());
+      print(stackTrace);
     });
   }
 
-  Future<void> getUsersApi(BuildContext context) async {
+  Future<ApiResponse<List<UserList>>> getUsersApi(BuildContext context) async {
     loading = true;
     notifyListeners();
 
-    _myRepo.getUsers().then((value) {
+    try {
+      final value = await _myRepo.getUsers(context);
+
+      try {
+        usersList = ApiResponse.completed(UserList.fromJsonList(value.data));
+        
+      } catch (e) {
+        throw Exception('Error during conversion');
+      }
+
       loading = false;
       notifyListeners();
 
-      usersList = ApiResponse.completed(value.cast<UserList>());
+      //usersList = ApiResponse.completed(value.cast<UserList>());
       Utils().showErrorFlushBar(context, "Success", "Get Users Successful");
-        }).onError((error, stackTrace) {
+      return usersList;
+    } catch (error, stackTrace) {
       loading = false;
       usersList = ApiResponse.error(error.toString());
       notifyListeners();
 
       print(error.toString());
       Utils().showErrorFlushBar(context, "Error", error.toString());
-    });
+
+      // Puoi decidere se rilanciare l'eccezione o gestirla in modo diverso a seconda delle tue esigenze.
+      throw Exception(error.toString());
+    }
   }
+
 
 
 }

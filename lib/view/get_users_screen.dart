@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theater_frontend/model_view/auth_view_model.dart';
 
@@ -32,7 +33,7 @@ class _getUsersScreenState extends State<getUsersScreen> {
               onPressed:() {
                 final userViewModel = Provider.of<UserViewModel>(context, listen: false);
                 userViewModel.removeUser();
-                Navigator.pushNamed(context, RoutesName.login);
+                context.go(RoutesName.login);
               },
               icon: const Icon(Icons.logout_outlined),
             ),

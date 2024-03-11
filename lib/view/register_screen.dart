@@ -16,6 +16,15 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
+  @override
+  void initState() {
+    /*final SplashScreenServices _splashScreenServices = SplashScreenServices();
+    _splashScreenServices.checkAuthentication(context as BuildContext);*/
+    super.initState();
+  }
+
+
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _surnameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();

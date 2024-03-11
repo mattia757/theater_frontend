@@ -10,7 +10,8 @@ class AppColors {
 }
 
 class Utils {
-  void onChangeFocusNode(BuildContext context, currentFocusNode, nextFocusNode) {
+  void onChangeFocusNode(BuildContext context, currentFocusNode,
+      nextFocusNode) {
     currentFocusNode.unfocus();
     FocusScope.of(context).requestFocus(nextFocusNode);
   }
@@ -22,6 +23,20 @@ class Utils {
       margin: const EdgeInsets.symmetric (horizontal: 10, vertical: 15),
       padding: const EdgeInsets.all (15),
       duration: const Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+      backgroundColor: AppColors.flushbarErrorColor,
+      positionOffset: 20,
+      borderRadius: BorderRadius.circular(15),
+      icon: const Icon(Icons.error_outline),
+    ).show(context);
+  }
+
+  void showErrorsFlushBar(BuildContext context) {
+    Flushbar(
+      //message: ,
+      margin: const EdgeInsets.symmetric (horizontal: 10, vertical: 15),
+      padding: const EdgeInsets.all (15),
+      duration: const Duration(seconds: 3),
       flushbarPosition: FlushbarPosition. TOP,
       backgroundColor: AppColors.flushbarErrorColor,
       positionOffset: 20,
@@ -29,4 +44,16 @@ class Utils {
       icon: const Icon(Icons.error_outline),
     ).show(context);
   }
+
+  /*void showSnackBar(String errormessage) {
+    final snackBar = SnackBar(
+        content: Text(
+          errormessage,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }*/
+
+
 }

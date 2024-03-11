@@ -1,41 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:theater_frontend/model/user_model.dart';
 import 'package:theater_frontend/utils/routes/routes_name.dart';
 
+import '../../model_view/user_view_model.dart';
 import '../../view/home_screen.dart';
 import '../../view/login_screen.dart';
 import '../../view/register_screen.dart';
-import '../../view/splash_screen.dart';
 
 class Routes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case RoutesName.splash:
-        return MaterialPageRoute(
-          builder: (context) => SplashScreen(),
-        );
-      case RoutesName.home:
-        return MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        );
-      case RoutesName.login:
-        return MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        );
-      case RoutesName.register:
-        return MaterialPageRoute(
-          builder: (context) => RegisterScreen(),
-        );
-      default:
-        return MaterialPageRoute(
-            builder: (context) {
-              return Scaffold(
-                body: Center(
-                  child: Text("No Routes Defined"),
-                ),
-              );
-            }
-        );
+  static Map<String, WidgetBuilder> staticRoutes = {
+    RoutesName.home: (context) => HomeScreen(),
+    RoutesName.login: (context) => LoginScreen(),
+    RoutesName.register: (context) => RegisterScreen(),
+  };
+
+  static Future<String?> checkAuth(String redirectRoute) async {
+    final UserModel user = await UserViewModel().getUser();
+    if (user.token == null) {
+      return redirectRoute;
+    } else {
+      return null;
     }
   }
+
+  static final routerConfig = GoRouter(
+    initialLocation: RoutesName.login,
+    routes: [
+      GoRoute(
+        path: RoutesName.home,
+        builder: (context, state) => HomeScreen(),
+        redirect: (context, state) async {
+          return await checkAuth(RoutesName.login);
+        }
+      ),
+      GoRoute(
+        path: RoutesName.login,
+        builder: (context, state) => LoginScreen(),
+      ),
+      GoRoute(
+        path: RoutesName.register,
+        builder: (context, state) => RegisterScreen(),
+      ),
+    ],
+  );
 }

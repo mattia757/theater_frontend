@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:theater_frontend/utils/routes/routes.dart';
-import 'package:theater_frontend/utils/routes/routes_name.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'model_view/auth_view_model.dart';
 import 'model_view/user_view_model.dart';
 
 void main() {
+  setUrlStrategy(PathUrlStrategy());
   runApp(const MyApp());
 }
 
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthViewModel(),
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: Routes.routerConfig,
         title: 'Flutter Demo',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
@@ -39,8 +41,6 @@ class MyApp extends StatelessWidget {
           ),
           primarySwatch: Colors.blue,
         ),
-        initialRoute: RoutesName.splash,
-        onGenerateRoute: Routes.generateRoute,
       ),
     );
   }

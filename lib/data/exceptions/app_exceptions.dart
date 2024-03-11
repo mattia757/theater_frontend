@@ -23,3 +23,11 @@ class UnauthorisedException extends AppException {
 class InvalidInputException extends AppException {
   InvalidInputException([String? message]) : super("Invalid Input");
 }
+
+class BadCredentialsException extends AppException {
+  BadCredentialsException([String? message]) : super("Bad Credentials");
+}
+
+class ResourceNotFoundException extends AppException {
+  ResourceNotFoundException([String? message]) : super("Resource Not Found");
+}

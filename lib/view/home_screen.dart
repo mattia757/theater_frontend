@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../model_view/home_view_model.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               final userViewModel = Provider.of<UserViewModel>(context, listen: false);
               userViewModel.removeUser();
-              Navigator.pushNamed(context, RoutesName.login);
+              context.go(RoutesName.login);
             },
             icon: const Icon(Icons.logout_outlined),
           ),

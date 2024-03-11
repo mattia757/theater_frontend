@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:theater_frontend/utils/Validator.dart';
 
 import '../model_view/auth_view_model.dart';
 import '../resources/components/rounded_button.dart';
 import '../utils/utils.dart';
-import 'register_screen.dart'; // Assicurati di importare la schermata di registrazione
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,6 +18,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _usernameFocusNode = FocusNode();
   final ValueNotifier<bool> _obscureText = ValueNotifier<bool>(true);
@@ -100,20 +110,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     RoundedButton(
                       title: "Login",
                       onPress: () {
-                        if(_usernameController.text.isEmpty) {
-                          Utils().showErrorFlushBar(context, 'Email is required', 'Please Fill the Email');
-                        } else if(_passwordController.text.isEmpty) {
-                          Utils().showErrorFlushBar(context, 'Password is required', 'Please Fill the Password');
-                        } else if (_passwordController.text.length < 6) {
-                          Utils().showErrorFlushBar(context, 'Password is too short', 'Password must be at least 6 characters');
-                        }
+                        if(
+                            Validator.validateUsername(_usernameController.text, context) != 'Validate' ||
+                            Validator.validatePassword(_passwordController.text, context) != 'Validate'
+                        ){}
                         else {
                           Map data = {
                             'username': _usernameController.text.toString(),
                             'password': _passwordController.text.toString(),
                             'CustomType': 'authenticationUser',
                           };
-                          authViewModel.loginApi(data, context);
+                          try {
+                            authViewModel.loginApi(jsonEncode(data), context);
+                          } catch (e) {
+                            Utils().showErrorFlushBar(context, "Error", e.toString());
+                            rethrow;
+                          }
                         }
                       },
                     ),
@@ -122,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: "Register",
                       onPress: () {
                         // Naviga alla schermata di registrazione
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+                        context.go(RegisterScreen() as String);
                       },
                     ),
                   ],
@@ -133,5 +145,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

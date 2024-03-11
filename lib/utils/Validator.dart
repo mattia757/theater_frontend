@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:theater_frontend/utils/utils.dart';
 
 class Validator {
-  static String? validateName(String value, BuildContext context) {
+  static String validateName(String value, BuildContext context) {
     if (value.isEmpty) {
       Utils().showErrorFlushBar(context, 'Name is required', 'Please Fill the Name');
       return 'Name is required';
@@ -10,7 +10,7 @@ class Validator {
     return 'Validate';
   }
 
-  static String? validateSurname(String value, BuildContext context) {
+  static String validateSurname(String value, BuildContext context) {
     if (value.isEmpty) {
       Utils().showErrorFlushBar(context, 'Surname is required', 'Please Fill the surname');
       return 'Surname is required';
@@ -18,9 +18,22 @@ class Validator {
     return 'Validate';
   }
 
-  static String? validateEmail(String value, BuildContext context) {
+  static String validateUsername(String value, BuildContext context) {
+    RegExp regex = RegExp(r'^\d{8}$');
     if (value.isEmpty) {
-      Utils().showErrorFlushBar(context, 'Email is required', 'Please Fill the surname');
+      Utils().showErrorFlushBar(context, 'Username is required', 'Please Fill the username');
+      return 'Email is required';
+    }
+    else if (!regex.hasMatch(value)) {
+      Utils().showErrorFlushBar(context, 'Username must be 8 characters long', 'Please rewrite the username in the correct format');
+      return 'Username is not in correct format';
+    }
+    return 'Validate';
+  }
+
+  static String validateEmail(String value, BuildContext context) {
+    if (value.isEmpty) {
+      Utils().showErrorFlushBar(context, 'Email is required', 'Please Fill the email');
       return 'Email is required';
     } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
       Utils().showErrorFlushBar(context, 'Email must be correct Format', 'Please rewrite the email in the correct format');
@@ -29,7 +42,7 @@ class Validator {
     return 'Validate';
   }
 
-  static String? validatePassword(String value, BuildContext context) {
+  static String validatePassword(String value, BuildContext context) {
     if (value.isEmpty) {
       Utils().showErrorFlushBar(context, 'Password is required', 'Please Fill the Password');
       return 'Password is required';
@@ -40,7 +53,7 @@ class Validator {
     return 'Validate';
   }
 
-  static String? validateConfirmPassword(String password, String confirmPassword, BuildContext context) {
+  static String validateConfirmPassword(String password, String confirmPassword, BuildContext context) {
     if (confirmPassword.isEmpty) {
       Utils().showErrorFlushBar(context, 'Confirm Password is required', 'Please Fill the Confirm Password');
       return 'Confirm Password is required';
