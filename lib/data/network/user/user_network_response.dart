@@ -37,6 +37,7 @@ class UserNetworkResponse extends BaseUserApiServices {
         data: data,
         options: Options(
           headers: {
+            //"Authorization": "Bearer $token"},
             "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
             "Access-Control-Allow-Origin": "*",
@@ -47,28 +48,25 @@ class UserNetworkResponse extends BaseUserApiServices {
     } on dynamic catch (e) {
       CustomExceptionHandler.handleException(context, e);
     }
-
   }
 
-  /*dynamic returnResponse(Response response) {
-    switch (response.statusCode) {
-      case 200:
-        dynamic responseJson = jsonDecode(response.data);
-        if (responseJson is List) {
-          print('hdgfgvuisdbnvs');
+  @override
+  Future<dynamic> getDeleteApiResponse(BuildContext context, String url) async {
+    try {
+      final response = await Dio().delete(
+        url,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Access-Control-Allow-Origin": "*",
+          },
+        ),
+      );
+      return response;
+    } on dynamic catch (e) {
+      CustomExceptionHandler.handleException(context, e);
+    }
+  }
 
-          return (responseJson as List).map((item) => UserList.fromJson(item)).toList();
-        } else if (response.data is String) {
-          print('asdfghjk');
-          dynamic responseJson = jsonDecode(response.data);
-
-          return responseJson;
-        } else {
-          return response.data;
-        }
-      case 503:
-        throw UnauthorisedException("You don't have authorization");
-      default:
-        throw FetchDataException('Error occured while Communication with Server with StatusCode : ${response.statusCode}');
-    }*/
 }

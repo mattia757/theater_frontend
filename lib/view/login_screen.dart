@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theater_frontend/utils/Validator.dart';
+import 'package:theater_frontend/utils/routes/routes_name.dart';
 
 import '../model_view/auth_view_model.dart';
 import '../resources/components/rounded_button.dart';
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: "Register",
                       onPress: () {
                         // Naviga alla schermata di registrazione
-                        context.go(RegisterScreen() as String);
+                        context.go(RoutesName.register);
                       },
                     ),
                   ],

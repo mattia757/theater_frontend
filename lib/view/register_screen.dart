@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:js';
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void initState() {
-    /*final SplashScreenServices _splashScreenServices = SplashScreenServices();
-    _splashScreenServices.checkAuthentication(context as BuildContext);*/
     super.initState();
   }
 
@@ -228,7 +227,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'password': _passwordController.text,
                         'CustomType': 'registrationUser'
                       };
-                      authViewModel.registerApi(data, context);
+                      try {
+                        print(data.toString());
+                        authViewModel.registerApi(context, jsonEncode(data));
+                      } catch (e) {
+                        Utils().showErrorFlushBar(context, "Error", e.toString());
+                        rethrow;
+                      }
                     }
                   },
                 );

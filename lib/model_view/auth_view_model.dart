@@ -20,11 +20,11 @@ class AuthViewModel with ChangeNotifier {
   bool loading = false;
   ApiResponse<List<UserList>> usersList = ApiResponse.loading();
 
-  Future<void> registerApi(dynamic data, BuildContext context) async {
+  Future<void> registerApi(BuildContext context, dynamic data) async {
     loading = true;
     notifyListeners();
 
-    _myRepo.userRegister(data, context).then((value) {
+    _myRepo.userRegister(context, data).then((value) {
       loading = false;
       notifyListeners();
 
@@ -33,7 +33,7 @@ class AuthViewModel with ChangeNotifier {
       final userModelViewModel =
       Provider.of<UserViewModel>(context, listen: false);
 
-      userModelViewModel.saveUser(UserModel(token: value.toString()));
+      //userModelViewModel.saveUser(UserModel(token: value.toString()));
       context.go(RoutesName.home);
     }).onError((error, stackTrace) {
       loading = false;

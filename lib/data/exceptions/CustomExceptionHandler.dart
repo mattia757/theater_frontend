@@ -12,6 +12,10 @@ class CustomExceptionHandler {
         throw UnauthorisedException("Utente non autorizzato");
       } else if (exception.response?.statusCode == 404) {
         throw ResourceNotFoundException("Risorsa non trovata");
+      } else if (exception.response?.statusCode == 409) {
+        throw ConflictException("Conflitto");
+      } else if (exception.response?.statusCode == 500) {
+        throw InternalServerException("Errore interno del server");
       } else {
         print('Unhandled DioError: $exception');
         throw exception;

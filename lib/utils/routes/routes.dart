@@ -5,6 +5,7 @@ import 'package:theater_frontend/model/user_model.dart';
 import 'package:theater_frontend/utils/routes/routes_name.dart';
 
 import '../../model_view/user_view_model.dart';
+import '../../view/delete_user_screen.dart';
 import '../../view/home_screen.dart';
 import '../../view/login_screen.dart';
 import '../../view/register_screen.dart';
@@ -43,6 +44,10 @@ class Routes {
         path: RoutesName.register,
         builder: (context, state) => RegisterScreen(),
       ),
+      GoRoute(
+          path: RoutesName.delete,
+          builder: (context, state) => DeleteUserScreen(),
+      )
     ],
   );
 }

@@ -31,3 +31,11 @@ class BadCredentialsException extends AppException {
 class ResourceNotFoundException extends AppException {
   ResourceNotFoundException([String? message]) : super("Resource Not Found");
 }
+
+class ConflictException extends AppException {
+  ConflictException([String? message]) : super("Conflict");
+}
+
+class InternalServerException extends AppException {
+  InternalServerException([String? message]) : super("Internal Server Error");
+}
