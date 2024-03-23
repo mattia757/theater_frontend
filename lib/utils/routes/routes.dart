@@ -9,13 +9,14 @@ import '../../view/delete_user_screen.dart';
 import '../../view/home_screen.dart';
 import '../../view/login_screen.dart';
 import '../../view/register_screen.dart';
+import '../../widgets/base_layout.dart';
 
 class Routes {
-  static Map<String, WidgetBuilder> staticRoutes = {
+/*  static Map<String, WidgetBuilder> staticRoutes = {
     RoutesName.home: (context) => HomeScreen(),
     RoutesName.login: (context) => LoginScreen(),
     RoutesName.register: (context) => RegisterScreen(),
-  };
+  };*/
 
   static Future<String?> checkAuth(String redirectRoute) async {
     final UserModel user = await UserViewModel().getUser();
@@ -31,7 +32,9 @@ class Routes {
     routes: [
       GoRoute(
         path: RoutesName.home,
-        builder: (context, state) => HomeScreen(),
+        builder: (context, state) => BaseLayout(
+          mainContent: HomeScreen(),
+        ),
         redirect: (context, state) async {
           return await checkAuth(RoutesName.login);
         }

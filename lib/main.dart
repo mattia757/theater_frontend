@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         routerConfig: Routes.routerConfig,
         title: 'Flutter Demo',
         theme: ThemeData(
+          brightness: Brightness.dark,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.deepPurple,
             titleTextStyle: TextStyle(

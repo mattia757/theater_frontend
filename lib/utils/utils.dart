@@ -7,6 +7,8 @@ class AppColors {
   static Color buttonColor = Colors.deepPurple;
   static Color buttonTextColor = Colors.white;
   static Color flushbarErrorColor = Colors.red;
+
+  static const defaultPadding = 20.0;
 }
 
 class Utils {
