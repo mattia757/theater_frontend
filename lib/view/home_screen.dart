@@ -31,10 +31,19 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Home Screen'),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-              userViewModel.removeUser();
-              context.go(RoutesName.login);
+              try {
+                await userViewModel.logout();
+                // Usa `mounted` per verificare se il widget è ancora nell'albero dei widget.
+                if (!mounted) return;
+                // Se il widget è ancora montato, allora procedi con la navigazione.
+                context.go(RoutesName.login);
+              } catch (e) {
+                // Anche qui, controlla se il widget è ancora montato prima di mostrare lo SnackBar.
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logout failed')));
+              }
             },
             icon: const Icon(Icons.logout_outlined),
           ),
